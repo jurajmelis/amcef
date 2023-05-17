@@ -8,6 +8,10 @@ router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
   try {
     const { username, password } = req.body;
 
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Missing username or password request body' });
+    }
+
     await authService.registerUser(username, password);
 
     res.status(201).json({ message: 'User registered successfully' });
@@ -20,6 +24,10 @@ router.post('/register', async (req: AuthenticatedRequest, res: Response) => {
 router.post('/login', async (req: Request, res: Response) => {
   try {
     const { username, password } = req.body;
+
+    if (!username || !password) {
+      return res.status(400).json({ message: 'Missing username or password request body' });
+    }
 
     const token = await authService.loginUser(username, password);
 
