@@ -1,0 +1,170 @@
+openapi: 3.0.3
+info:
+  title: ToDo application
+  description:
+      ToDo is REST, stateless, node.js application in Node.JS created using Express framework
+  version: 1.0.0
+paths:
+  /api/auth/register:
+    post:
+      summary: Register a new user
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/UserInput'
+      responses:
+        '201':
+          description: User registered successfully
+        '500':
+          description: Internal server error
+  /api/auth/login:
+    post:
+      summary: Authenticate user and generate a token
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/Credentials'
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  token:
+                    type: string
+        '500':
+          description: Internal server error
+  /api/todos/allToDo:
+    get:
+      summary: Retrieve all todos
+      responses:
+        '200':
+          description: Successful response
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  todos:
+                    type: array
+                    items:
+                      $ref: '#/components/schemas/ToDo'
+        '500':
+          description: Internal server error
+  /api/todos/toDo:
+    post:
+      summary: Create a new todo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToDoInput'
+      responses:
+        '201':
+          description: Todo created successfully
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /api/todos/users/{id}:
+    put:
+      summary: Update users in a todo
+      parameters:
+        - name: id
+          in: path
+          description: Todo ID
+          required: true
+          schema:
+            type: string
+        - name: userId
+          in: query
+          description: User ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Users updated successfully
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+  /api/todos/fields/{id}:
+    put:
+      summary: Append field to a todo
+      parameters:
+        - name: id
+          in: path
+          description: Todo ID
+          required: true
+          schema:
+            type: string
+        - name: field
+          in: query
+          description: Field object
+          required: true
+          schema:
+            $ref: '#/components/schemas/FieldInput'
+      responses:
+        '200':
+          description: Field appended successfully
+        '400':
+          description: Bad request
+        '500':
+          description: Internal server error
+components:
+  schemas:
+    UserInput:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    Credentials:
+      type: object
+      properties:
+        username:
+          type: string
+        password:
+          type: string
+    ToDo:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        deadline:
+          type: string
+        createdBy:
+          type: string
+        users:
+          type: array
+          items:
+            type: string
+    ToDoInput:
+      type: object
+      properties:
+        title:
+          type: string
+        description:
+          type: string
+        deadline:
+          type: string
+    FieldInput:
+      type: object
+      properties:
+        fieldName:
+          type: string
+        fieldType:
+          type: string
+        fieldValue:
+          type: string
