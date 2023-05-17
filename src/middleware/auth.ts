@@ -2,7 +2,6 @@ import { Request, Response, NextFunction } from 'express';
 import jwt from 'jsonwebtoken';
 import User, { IUser } from '../model/User';
 
-
 export interface AuthenticatedRequest extends Request {
   user?: IUser;
 }
