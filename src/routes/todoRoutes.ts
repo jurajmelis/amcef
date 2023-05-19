@@ -1,5 +1,6 @@
 import express, { Request, Response } from 'express';
 import authMiddleware, { AuthenticatedRequest } from '../middleware/auth';
+import checkUserPermission from '../middleware/permission';
 import * as todoService from '../services/todoService';
 
 const router = express.Router();
@@ -33,7 +34,7 @@ router.post('/toDo', authMiddleware, async (req: AuthenticatedRequest, res: Resp
   }
 });
 
-router.put('/users/:id', authMiddleware, async (req: Request, res: Response) => {
+router.put('/users/:id', authMiddleware, checkUserPermission, async (req: Request, res: Response) => {
   try {
     const { userId } = req.body;
     const { id } = req.params;
@@ -51,7 +52,7 @@ router.put('/users/:id', authMiddleware, async (req: Request, res: Response) => 
   }
 });
 
-router.put('/fields/:id', authMiddleware, async (req: Request, res: Response) => {
+router.put('/fields/:id', authMiddleware, checkUserPermission, async (req: Request, res: Response) => {
   try {
     const { fieldName, fieldType, fieldValue } = req.body;
     const { id } = req.params;
